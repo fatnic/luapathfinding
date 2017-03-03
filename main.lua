@@ -33,10 +33,6 @@ end
 function love.draw()
     grid:drawGrid()
 
-    -- local mgrid = grid:xy2cell(love.mouse:getX(), love.mouse:getY())
-    -- love.graphics.setColor(55, 0, 0)
-    -- love.graphics.rectangle('fill', mgrid.x * grid:cellSize(), mgrid.y * grid:cellSize(), grid:cellSize(), grid:cellSize())
-
     love.graphics.setColor(0, 200, 0, 100)
     love.graphics.circle('fill', grid:cellCenter(start.x, start.y).x, grid:cellCenter(start.x, start.y).y, grid:cellSize() / 2)
 
@@ -44,18 +40,6 @@ function love.draw()
     love.graphics.circle('fill', grid:cellCenter(finish.x, finish.y).x, grid:cellCenter(finish.x, finish.y).y, grid:cellSize() / 2)
 
     for _, wall in pairs(walls) do wall:draw() end
-
-    -- for _, p in pairs(pathfinder.searched) do
-    --     local s = grid:cellCenter(p.x, p.y)
-    --     love.graphics.setColor(255, 255, 255, 20)
-    --     love.graphics.circle('fill', s.x, s.y, 5)
-    -- end
-
-    -- for _, b in pairs(pathfinder.blocklist) do
-    --     local s = grid:cellCenter(b.x, b.y)
-    --     love.graphics.setColor(255, 0, 0, 50)
-    --     love.graphics.circle('fill', s.x, s.y, 5)
-    -- end
 
     for _, w in pairs(path) do
         local s = grid:cellCenter(w.x, w.y)

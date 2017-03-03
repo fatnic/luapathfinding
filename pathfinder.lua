@@ -25,9 +25,6 @@ function Pathfinder.new(grid, sx, sy, gx, gy)
     self.cutcorners = false
     self.start = { x = sx, y = sy }
     self.goal = { x = gx, y = gy }
-    --
-    self.searched = {}
-    self.blocklist = {}
     return self
 end
 
@@ -51,16 +48,19 @@ function Pathfinder:solve()
         table.sort(openlist, function(a, b) return a.f < b.f end)
 
         local current = table.remove(openlist, 1)
-        table.insert(self.searched, current)
         table.insert(closedlist, current)
         
         if current:equal(self.goal) then
+
             local waypoints = {}
+
             while current.parent ~= nil do
                 table.insert(waypoints, { x = current.x, y = current.y })
                 current = current.parent
             end
+
             for i=#waypoints, 1, -1 do table.insert(finalpath, waypoints[i]) end
+
             return finalpath
         end
         
@@ -75,12 +75,7 @@ function Pathfinder:solve()
            
             local neighbour = { x = current.x + nx, y = current.y + ny }
 
-            if not neighbours[n+1] then
-                if n ~= 4 and neighbour.x > 0 and neighbour.y > 0 then
-                    table.insert(self.blocklist, neighbour)
-                end
-                ignore = true
-            end
+            if not neighbours[n+1] then ignore = true end
 
             if self:inlist(closedlist, neighbour) then ignore = true end
 
@@ -102,6 +97,7 @@ function Pathfinder:solve()
                     end
                     table.sort(openlist, function(a, b) return a.f < b.f end)
                 end
+
             end
 
         end
