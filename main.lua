@@ -1,6 +1,7 @@
 Wall = require 'wall'
 Grid = require 'grid'
 Pathfinder = require 'pathfinder'
+PathSmoother = require 'pathsmoother'
 
 w = {
     { 0, 0, love.graphics:getWidth(), love.graphics:getHeight(), true },
@@ -24,6 +25,7 @@ function love.load()
 
     pathfinder = Pathfinder.new(grid, start.x, start.y, finish.x, finish.y)
     path = pathfinder:solve()
+    smoothpath = PathSmoother.new(path)
 end
 
 function love.update(dt)
@@ -41,7 +43,7 @@ function love.draw()
 
     for _, wall in pairs(walls) do wall:draw() end
 
-    for _, w in pairs(path) do
+    for _, w in pairs(smoothpath:getPath()) do
         local s = grid:cellCenter(w.x, w.y)
         love.graphics.setColor(0, 255, 0, 150)
         love.graphics.circle('fill', s.x, s.y, 2)
